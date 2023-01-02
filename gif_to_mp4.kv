@@ -1,0 +1,78 @@
+<Label>
+    font_size: 15
+
+<Button>
+    size_hint: 0.3, 0.2
+    font_size: 20
+    background_normal: ''
+    background_color: (.2, .2, .2, 1)
+
+<MyLayout>:
+    id: my_widget
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: None, None
+        size: root.width, root.height
+        padding: 10
+        spacing: 10
+        height: sp(40)
+
+        FileChooserIconView:
+            size_hint: 0.3, 1
+            id: filechooser
+            size_hint: (1, 2)
+
+
+        Button:
+            text: "Select File"
+            id: file_select
+            size_hint: (.5, .1)
+            pos_hint: {"x":.25, "y": 1}
+            on_release: root.get_file_path(filechooser.selection)
+
+        Label:
+            text: "Path:"
+            id: path
+            size_hint: (.5, .1)
+            pos_hint: {"x":.25}
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, .2
+            padding: 10
+
+
+
+            CheckBox:
+                size_hint: 1, 0.3
+                group: "color"
+                active: True
+                color: (0, 1, 0, 1)
+                on_active: root.check_box(self, self.active, "GREEN")
+
+            CheckBox
+                size_hint: 1, 0.3
+                group: "color"
+                background_normal: ''
+                background_color: (1, 0, 0, 1)
+                color: (.95, 1, .4, 1)
+                on_active: root.check_box(self, self.active, "YELLOW")
+
+            CheckBox
+                size_hint: 1, 0.3
+                group: "color"
+                color: (.75, .26, .75, 1)
+                on_active: root.check_box(self, self.active, "PINK")
+
+        Button:
+            text: "Convert"
+            id: convert
+            size_hint: (.5, .1)
+            pos_hint: {"x":.25}
+            on_press: root.convert()
+
+        Label:
+            text: "Feedback:"
+            id: feedback
+            size_hint: (.5, .1)
+            pos_hint: {"x":.25}
