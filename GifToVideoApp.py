@@ -8,9 +8,6 @@ from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 import Global
 
-green_screen_color = "GREEN"
-directory_home = "K:\\Users\\kevoh"
-
 # Designate our .kv file
 Builder.load_file('gif_to_mp4.kv')
 
