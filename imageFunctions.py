@@ -2,11 +2,11 @@ from PIL import Image
 import numpy as np
 import glob
 import moviepy.editor as mp
-import ffmpeg
+import Global
 import os
 
 
-def convert(gif_path):
+def convert(gif_path, save_path):
     # Clear all old files.
     delete_all_files_in_directory("tempImages")
     delete_all_files_in_directory("greenTempImages")
@@ -14,6 +14,7 @@ def convert(gif_path):
     # iterate through the gifs in the folder 'gif_toConvert'.
     gif_path = gif_path
     print("Extracting PNGs from .gif.")
+    print("Convert Function, path to gif: " + gif_path)
     convert_gif_to_pngs(gif_path, "tempImages/")
 
     print("Adding green screen to PNGs.")
@@ -25,7 +26,7 @@ def convert(gif_path):
     convert_pngs_to_gif(gif_path)
 
     print("Converting .gif to MP4")
-    convert_gif_to_mp4("png_to_gif.gif", gif_path)
+    convert_gif_to_mp4("png_to_gif.gif", gif_path, save_path)
 
 
 def delete_all_files_in_directory(path_to_dir):
@@ -36,20 +37,26 @@ def delete_all_files_in_directory(path_to_dir):
 def add_green_to_png(img_path, save_path):
     img = Image.open(img_path)
     img_array = np.array(img)
-    #print("Shape of " + str(save_path) + " is: " + str(img_array.shape))
-    #print("The first pixel in this image is:               " + str(img_array[0, 0]))
     green_pixel = np.array([0, 255, 0, 255])
+    yellow_pixel = np.array([255, 247, 0, 255])
+    pink_pixel = np.array([255, 124, 243, 255])
     rows_of_pixels = 0
     number_of_pixels = 0
+
+    # Set green screen pixel color
+    if Global.green_screen_color == "PINK":
+        green_screen_pixel = pink_pixel
+    elif Global.green_screen_color == "YELLOW":
+        green_screen_pixel = yellow_pixel
+    else:
+        green_screen_pixel = green_pixel
 
     for row in range(0, img_array.shape[0] - 1):
         rows_of_pixels += 1
         for col in range(0, img_array.shape[1]):
             number_of_pixels += 1
             if img_array[row, col, 3].sum() == 0:
-                img_array[row, col] = green_pixel
-    #print("The pixel has been changed to:                  " + str(img_array[0, 0]))
-    #print("\n")
+                img_array[row, col] = green_screen_pixel
 
     data = Image.fromarray(img_array)
     data.save(save_path)
@@ -119,10 +126,9 @@ def convert_pngs_to_gif(original_gif_path):
                    duration=dur, loop=0)
 
 
-def convert_gif_to_mp4(path_to_gif, path_to_original_gif):
+def convert_gif_to_mp4(path_to_gif, path_to_original_gif, save_path):
     average_fps = round((1 / get_average_duration_of_gif(path_to_original_gif)) * 1000)
     clip = mp.VideoFileClip(path_to_gif)
-    print(clip.fps)
-    print(average_fps)
-    clip.write_videofile('my_video.mp4', fps=average_fps, codec='libx264', audio=False)
+    name_of_mp4 = os.path.split(path_to_original_gif)[1]
+    clip.write_videofile(save_path + name_of_mp4[:-4] + ".mp4", fps=average_fps, codec='libx264', audio=False)
 
