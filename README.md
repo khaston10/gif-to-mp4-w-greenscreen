@@ -1,7 +1,7 @@
 # Convert gif Files to MP4 with Green Screen Added
 ## An application built in Python that allows the user to convert GIFs to MP4s where the transparent pixels are replaced by green pixels. 
 
-Many applications do not support .gif files. This project will allow you to convert the file to a more widely supported file type. Since MP4s do not hold a transparent channel for pixels, all transparent pixels will be converted to a green screen color selected by the user. THis will allow green screen effects to be applied to the clip.
+Many applications do not support .gif files. This project will allow you to convert the file to a more widely supported file type. Since MP4s do not hold a transparent channel for pixels, all transparent pixels will be converted to a green screen color selected by the user. This will allow a green screen effects to be applied to the clip using video editing software.
 
 ## Watch a demonstration of the tool:
 
