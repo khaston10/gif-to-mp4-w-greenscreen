@@ -11,12 +11,13 @@
     r_size: [root.size[0]/ 1.2, root.size[1]/2]
     r1_size: [root.size[0] / 1.2, root.size[1] * .45]
     p1: [root.size[0] / 1.1, root.size[1] / 2]
+    logo_size: [root.size[0] / 8 + root.size[1] / 8 , root.size[0] / 8 + root.size[1] / 8]
 
     canvas:
         Rectangle:
             source: 'Logo.png'
-            pos: -20, -25
-            size: 200, 200
+            pos: 0, 0
+            size: root.logo_size[0], root.logo_size[1]
 
     id: my_widget
 
@@ -127,7 +128,8 @@
             id: convert
             size_hint: (.5, .3)
             pos_hint: {"x":.25}
-            on_press: root.convert()
+            on_press: root.update_convert_text()
+            on_release: root.convert()
 
         Label:
             text: ""

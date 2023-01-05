@@ -17,22 +17,32 @@ class MyLayout(Widget):
     r_size = ListProperty([0, 0])
     r1_size = ListProperty([0, 0])
     p1 = ListProperty([0, 0])
+    logo_size = ListProperty([0, 0])
 
     def check_box(self, instance, value, color):
         Global.green_screen_color = color
         self.ids.feedback.text = "Green screen color has been set to " + color
         print(Global.green_screen_color)
 
+    def update_convert_text(self):
+        self.ids.feedback.text = "Converting is in progress... Please wait."
+
     def convert(self):
-        if self.ids.feedback.text[-4:] == ".gif":
-            self.ids.feedback.text = "Converting is in progress... Please wait."
-            path_to_gif = self.ids.filechooser.selection[0]
-            path_for_save = os.path.split(path_to_gif)[0] + "\\"
-            convert(path_to_gif, path_for_save)
-            self.ids.filechooser._update_files()
+        if len(self.ids.filechooser.selection) != 0:
+
+            if self.ids.filechooser.selection[0][-4:] == ".gif":
+                path_to_gif = self.ids.filechooser.selection[0]
+                path_for_save = os.path.split(path_to_gif)[0] + "\\"
+                convert(path_to_gif, path_for_save)
+                self.ids.filechooser._update_files()
+                self.ids.feedback.text = "MP4 created."
+
+            else:
+                self.ids.feedback.text = "No gif has been selected."
 
         else:
             self.ids.feedback.text = "No gif has been selected."
+
 
     def get_file_path(self, file_name):
         try:
